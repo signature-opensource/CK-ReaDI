@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CK.ActivityMonitor.SimpleSender" Version="22.0.0-a00-00-0006-develop" />
+    </ItemGroup>
+
+    <ItemGroup>
+    <ProjectReference Include="..\CK.ReaDI.Abstractions\CK.ReaDI.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
