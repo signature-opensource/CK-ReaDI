@@ -21,9 +21,16 @@ sealed class ReaDImplMethod : ReaDImplMethodBase
 
     public bool IsPublic => MethodBase.IsPublic;
 
+    /// <summary>
+    /// This applies only to non virtual methods that are masked by a method with the same name on a specialized type
+    /// that must be decorated with a <see cref="OverrideReaDImplAttribute"/>.
+    /// This substitution is possible regardless of the method protection: the parent method can be public, protected or private.
+    /// </summary>
+    ReaDImplMethod? MaskedBy { get; }
+
     internal static bool Create( IActivityMonitor monitor, MethodInfo info, [NotNullWhen( true )] out ReaDImplMethod? method )
     {
-        string ErrorName() => $"Method [ReaDI] '{info.DeclaringType:N}.{info.Name}( ... )'";
+        string ErrorName() => $"Method [ReaDImpl] '{info.DeclaringType:N}.{info.Name}( ... )'";
 
         bool success = AnalyzeParameters( monitor, info, ErrorName, out ParameterInfo[] parameters, out Type[] arrayTypes );
         var tR = info.ReturnType;
@@ -31,7 +38,7 @@ sealed class ReaDImplMethod : ReaDImplMethodBase
         {
             monitor.Error( $"""
                             {ErrorName()} returns '{tR:C}'.
-                            [ReaDI] method must return a ReaDIResult or a ReaDIResult<T>.
+                            [ReaDImpl] method must return a ReaDIResult or a ReaDIResult<T>.
                             """ );
             success = false;
         }

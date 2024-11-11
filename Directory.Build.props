@@ -44,9 +44,6 @@
     <!--Nullable Reference Type should always be used!-->
     <Nullable>enable</Nullable>
     <PackageIcon>PackageIcon.png</PackageIcon>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)Common/SharedKey.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
   </PropertyGroup>
   <ItemGroup>
     <None Include="$(SolutionDir)Common/PackageIcon.png" Pack="true" PackagePath="\" Visible="false" />

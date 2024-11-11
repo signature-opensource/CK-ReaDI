@@ -1,6 +1,23 @@
+using System;
 using System.Collections.Immutable;
 
 namespace CK.Core;
+
+public enum ReaDIServiceKind
+{
+    None,
+    Service,
+    ScopeService,
+    BuilderService
+}
+
+
+public interface IReaDIEntryPoint
+{
+    Type Type { get; }
+
+    ReaDIServiceKind ServiceKind { get; }
+}
 
 /// <summary>
 /// Generalizes <see cref="ReaDITypeHost"/> and <see cref="ReaDIMemberHost"/>.
@@ -26,8 +43,7 @@ public interface IReaDIHost
     /// Gets the "ReaDI aware" attributes that decorate this type or members.
     /// <para>
     /// This includes any regular custom attributes but not the <see cref="ReaDIAttribute"/> as
-    /// they are replaced by their associated <c>[ReadImpl]</c> instance.
-    /// See <see cref="ReaDImplAttribute"/>.
+    /// they are replaced by their associated IReaDIHost instance.
     /// </para>
     /// </summary>
     ImmutableArray<object> Attributes { get; }

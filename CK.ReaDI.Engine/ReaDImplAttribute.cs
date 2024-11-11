@@ -19,7 +19,9 @@ namespace CK.Core;
 ///         A single optional <see cref="ReaDIAttribute"/> type that is the source <c>[ReaDI]</c> attribute.
 ///         </item>
 ///         <item>
-///         Any service that should be available in the root <see cref="IServiceProvider"/>.
+///         A single optional <see cref="ICachedItem"/>. This is always available, it is the either the Type or the
+///         Method, Property or Event decorated by the <c>[ReaDI]</c> attribute (an item is a <see cref="ICachedType"/>
+///         xor a <see cref="ICachedMember"/>).
 ///         </item>
 ///         <item>
 ///         A single optional <see cref="ICachedType"/>. This is always available, it is the Type that is decorated
@@ -28,6 +30,9 @@ namespace CK.Core;
 ///         <item>
 ///         A single optional <see cref="ICachedMember"/> that is the <c>[ReaDI]</c> decorated method, propertie or event.
 ///         This de facto restricts the source <c>[ReaDI]</c> attribute to target only methods, properties or events.
+///         </item>
+///         <item>
+///         Any service that should be available in the root <see cref="IServiceProvider"/>.
 ///         </item>
 ///     </list>
 ///     </para>
@@ -67,3 +72,4 @@ public sealed class ReaDImplAttribute : Attribute
                                                | AttributeTargets.Method
                                                | AttributeTargets.Constructor;
 }
+

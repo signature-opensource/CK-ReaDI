@@ -2,9 +2,15 @@ using CK.Core;
 using System;
 using System.Collections.Immutable;
 using System.Reflection;
-using static CK.Core.ActivityMonitor;
 
 namespace CK.ReaDI.Engine;
+
+sealed class Param
+{
+    Type ParameterType { get; }
+    bool IsOptional { get; }
+    ParameterInfo ParameterInfo { get; }
+}
 
 abstract class ReaDImplMethodBase
 {
@@ -69,10 +75,14 @@ abstract class ReaDImplMethodBase
             {
                 monitor.Error( $"""
                                 {errorName()}: parameter '{tI.Name} {pI.Name}' has a default value.
-                                [ReaDI] parameters cannot have default value.
+                                [ReaDImpl] parameters cannot have default value.
                                 """ );
                 success = false;
             }
+            // Wrong!
+            // A constructor can be deferred otherwise we won't be able to easyly define scoped context.
+            // We should consider a [ReaDImpl] constructor as a ReaDIAction with a ReaDIResult<T> where T is
+            // the declaring type.
             if( isConstructor )
             {
                 if( tI == typeof( IReaDIHost ) || tI == typeof( ReaDITypeHost ) || tI == typeof( ReaDIMemberHost ) )

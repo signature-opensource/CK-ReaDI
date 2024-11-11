@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace CK.ReaDI.Engine;
 
+/// <summary>
+/// Generalizes <see cref="ICachedType"/> and <see cref="ICachedMember"/>.
+/// </summary>
 public interface ICachedItem
 {
     /// <summary>

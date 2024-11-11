@@ -89,7 +89,7 @@ sealed class ReaDImplType
                 Throw.DebugAssert( methods != null );
                 monitor.Error( $"""
                                 [ReaDImpl] type '{t:N}' has private [ReaDImpl] methods but no public [ReaDImpl] method.
-                                Private method ('{methods.Select( m => m.MethodInfo.Name).Concatenate(,"', '")}') can only be continuations of at least one public [ReaDImpl] method.
+                                Private method ('{methods.Select( m => m.MethodInfo.Name).Concatenate("', '")}') can only be continuations of at least one public [ReaDImpl] method.
                                 """ );
                 success = false;
             }
