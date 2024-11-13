@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -8,13 +8,17 @@ public sealed partial class ReaDICache
 {
     class CachedItem
     {
+        readonly MemberInfo _member;
         readonly ImmutableArray<CustomAttributeData> _customAttributes;
         ImmutableArray<object> _attributes;
 
-        public CachedItem(ImmutableArray<CustomAttributeData> customAttributes)
+        public CachedItem( MemberInfo member, ImmutableArray<CustomAttributeData> customAttributes)
         {
+            _member = member;
             _customAttributes = customAttributes;
         }
+
+        protected MemberInfo MemberInfo => _member;
 
         public ImmutableArray<CustomAttributeData> CustomAttributes => _customAttributes;
 
@@ -24,11 +28,12 @@ public sealed partial class ReaDICache
             {
                 if( _attributes.IsDefault )
                 {
-                    _attributes = ImmutableCollectionsMarshal.AsImmutableArray( _type.GetCustomAttributes( false ) );
+                    _attributes = ImmutableCollectionsMarshal.AsImmutableArray( _member.GetCustomAttributes( false ) );
                 }
                 return _attributes;
             }
         }
+
     }
 
 

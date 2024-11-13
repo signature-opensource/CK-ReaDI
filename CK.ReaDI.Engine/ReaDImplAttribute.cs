@@ -71,5 +71,15 @@ public sealed class ReaDImplAttribute : Attribute
     public const AttributeTargets ReaDITargets = AttributeTargets.Class
                                                | AttributeTargets.Method
                                                | AttributeTargets.Constructor;
+
+    /// <summary>
+    /// Gets or sets an optional Type that must be assignable from the [ReaDI] decorated type.
+    /// <para>
+    /// A typical example is that <c>[SqlTable]</c> should only decorate a <c>SqlTable</c> derived class:
+    /// the <c>SqlTableImpl</c> can be a <c>[ReaDImpl( RequiredDecoratedType = typeof( SqlTable )]</c>: this kind of
+    /// check is implemented once for all in the ReaDI engine.
+    /// </para>
+    /// </summary>
+    public Type? RequiredDecoratedType { get; set; }
 }
 

@@ -21,18 +21,12 @@ sealed class ReaDImplMethod : ReaDImplMethodBase
 
     public bool IsPublic => MethodBase.IsPublic;
 
-    /// <summary>
-    /// This applies only to non virtual methods that are masked by a method with the same name on a specialized type
-    /// that must be decorated with a <see cref="OverrideReaDImplAttribute"/>.
-    /// This substitution is possible regardless of the method protection: the parent method can be public, protected or private.
-    /// </summary>
-    ReaDImplMethod? MaskedBy { get; }
-
-    internal static bool Create( IActivityMonitor monitor, MethodInfo info, [NotNullWhen( true )] out ReaDImplMethod? method )
+    internal static ReaDImplMethod? Create( IActivityMonitor monitor, MethodInfo info, IServiceProvider services )
     {
         string ErrorName() => $"Method [ReaDImpl] '{info.DeclaringType:N}.{info.Name}( ... )'";
 
-        bool success = AnalyzeParameters( monitor, info, ErrorName, out ParameterInfo[] parameters, out Type[] arrayTypes );
+        var parameters = ReaDIMethodParameters.Create( monitor, info, services, ErrorName );
+        bool success = parameters != null;
         var tR = info.ReturnType;
         if( !typeof( IReaDIResult ).IsAssignableFrom( tR ) )
         {
@@ -44,6 +38,11 @@ sealed class ReaDImplMethod : ReaDImplMethodBase
         }
         if( success ) 
         {
+            Throw.DebugAssert( parameters != null );
+            Type? tResult = null;
+            var genArgs = tR.GetGenericArguments();
+            if( genArgs.Length > 0 ) tResult = genArgs[0];
+
             method = new ReaDImplMethod( info,
                                       ImmutableCollectionsMarshal.AsImmutableArray( parameters ),
                                       ImmutableCollectionsMarshal.AsImmutableArray( arrayTypes ) );

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using CK.Core;
 
@@ -11,21 +12,18 @@ public sealed partial class ReaDICache
     sealed class CachedType : CachedItem, ICachedType
     {
         readonly ICachedType? _baseType;
-        readonly Type _type;
-        readonly string _name;
+        string? _name;
         ImmutableArray<ICachedMember> _members;
 
         public CachedType( Type type,
                            ICachedType? baseType,
                            ImmutableArray<CustomAttributeData> customAttributes )
-            : base( customAttributes )    
+            : base( type, customAttributes )    
         {
-            _type = type;
             _baseType = baseType;
-            _name = _type.ToCSharpName();
         }
 
-        public Type Type => _type;
+        public Type Type => Unsafe.As<Type>( MemberInfo );
 
         public ICachedType? BaseType => _baseType;
 
@@ -53,6 +51,6 @@ public sealed partial class ReaDICache
             }
         }
 
-        public string ReaDIName => _name;
+        public string ReaDIName => _name ??= Type.ToCSharpName();
     }
 }
